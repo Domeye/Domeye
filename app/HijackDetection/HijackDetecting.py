@@ -1,56 +1,63 @@
 # -*- coding: utf-8 -*-
 # author:Pei Zhang
 # contact: zhangpei@bupt.edu.cn
+# datetime:2020/4/27 9:48
+# software: PyCharm
+
+"""
+文件说明：
+"""
+# -*- coding: utf-8 -*-
+# author:Pei Zhang
+# contact: zhangpei@bupt.edu.cn
 # datetime:2020/4/26 17:34
 # software: PyCharm
 
 """
 BGP Hijacking detection including Prefix Hijacking, Route leak .
 """
- 
+
 import time
 from datetime import datetime
 import json
 import os
 
-
-Hijack_events_dict=dict()
-
+Hijack_events_dict = dict()
 
 
 def init_asinfo(file):
-
     with open(file, 'r') as f:
-        AS_dict= json.load(f)
+        AS_dict = json.load(f)
     print('加载AS字典成功！')
     AS_dict['7049']['v4Peer'].append('7908')
 
     return AS_dict
 
-def write_event_file(dict,as_dict):
-        Hijack_events_file = open('hijack_events.txt', 'a')
 
-        Hijack_events_file.writelines(dict['prefix'])
-        Hijack_events_file.write('\n')
-        Hijack_events_file.writelines("ori_as:"+dict['ori_as'])
-        Hijack_events_file.write('\n')
-        Hijack_events_file.writelines("moas_set:"+str(list(dict['moas_set'])))
-        Hijack_events_file.write('\n')
-        Hijack_events_file.writelines("duration:"+str(dict['duration']))
-        Hijack_events_file.write('\n')
-        for asn in dict['moas_set']:
-            if asn in as_dict.keys():
-                line_str=asn+':'+as_dict[asn]["descr"]+' country:'+as_dict[asn]["country"]
-                Hijack_events_file.writelines(line_str)
-                Hijack_events_file.write('\n')
+def write_event_file(dict, as_dict):
+    Hijack_events_file = open('hijack_events.txt', 'a')
 
-        Hijack_events_file.writelines("starttime:"+dict['starttime'])
-        Hijack_events_file.write('\n')
-        Hijack_events_file.writelines("endtime:"+dict['endtime'])
-        Hijack_events_file.write('\n')
-        Hijack_events_file.writelines("------------------------------------------")
-        Hijack_events_file.write('\n')
-        Hijack_events_file.close()
+    Hijack_events_file.writelines(dict['prefix'])
+    Hijack_events_file.write('\n')
+    Hijack_events_file.writelines("ori_as:" + dict['ori_as'])
+    Hijack_events_file.write('\n')
+    Hijack_events_file.writelines("moas_set:" + str(list(dict['moas_set'])))
+    Hijack_events_file.write('\n')
+    Hijack_events_file.writelines("duration:" + str(dict['duration']))
+    Hijack_events_file.write('\n')
+    for asn in dict['moas_set']:
+        if asn in as_dict.keys():
+            line_str = asn + ':' + as_dict[asn]["descr"] + ' country:' + as_dict[asn]["country"]
+            Hijack_events_file.writelines(line_str)
+            Hijack_events_file.write('\n')
+
+    Hijack_events_file.writelines("starttime:" + dict['starttime'])
+    Hijack_events_file.write('\n')
+    Hijack_events_file.writelines("endtime:" + dict['endtime'])
+    Hijack_events_file.write('\n')
+    Hijack_events_file.writelines("------------------------------------------")
+    Hijack_events_file.write('\n')
+    Hijack_events_file.close()
 
 
 def write_begin_file(dict, as_dict):
@@ -78,7 +85,7 @@ def write_begin_file(dict, as_dict):
 
 
 def init_rtb(rib_file):
-    prefix_dict=dict()
+    prefix_dict = dict()
     with open(rib_file) as f:
         for line in f:
             fields = line.strip().split('|')
@@ -90,7 +97,6 @@ def init_rtb(rib_file):
                 vp, asn = as_path_fields[0], as_path_fields[-1]
             except Exception as e:
                 print(e, line_count, sep=':')
-
 
             prefix_dict.setdefault(prefix, dict())
             prefix_dict[prefix].setdefault('moasset', set()).add(asn)
@@ -108,7 +114,6 @@ def init_rtb(rib_file):
             prefix_dict[prefix].setdefault('starttime', prefix_dict[prefix]['firsttime'])
             prefix_dict[prefix].setdefault('endtime', '0')
 
-
             totlemoas = totlemoas + 1
         else:
             prefix_dict[prefix].setdefault('ismoasnow', False)
@@ -118,7 +123,8 @@ def init_rtb(rib_file):
     print('初始化路由表成功！')
     return prefix_dict
 
-def is_event(ori_as,moas_set,as_dict):
+
+def is_event(ori_as, moas_set, as_dict):
     peers = set()
     siblings = set()
 
@@ -160,10 +166,10 @@ def is_event(ori_as,moas_set,as_dict):
     return True
 
 
-def update_checking(file,prefix_dict,as_dict):
-    changed_flag=0
-    moas_change_count=0
-    new_moas_count=0
+def update_checking(file, prefix_dict, as_dict):
+    changed_flag = 0
+    moas_change_count = 0
+    new_moas_count = 0
 
     with open(file) as f:
         for line in f:
@@ -180,7 +186,7 @@ def update_checking(file,prefix_dict,as_dict):
                 if prefix in prefix_dict.keys():
                     if vp in prefix_dict[prefix].keys():
                         opath = prefix_dict[prefix][vp]
-                        ori_as=opath.split(' ')[-1]
+                        ori_as = opath.split(' ')[-1]
                         if opath != as_path:
                             prefix_dict[prefix][vp] = as_path
                             changed_flag = 1
@@ -208,16 +214,14 @@ def update_checking(file,prefix_dict,as_dict):
                         moasset.add(oasn)
                 moasnum = len(moasset)
 
-
-
                 if moasnum > 1:
                     if prefix_dict[prefix]['ismoasnow']:
                         eventid = prefix_dict[prefix]['moaseventid']
                         if prefix in Hijack_events_dict.keys():
                             if eventid in Hijack_events_dict[prefix].keys():
                                 if Hijack_events_dict[prefix][eventid]['moas_set'].isdisjoint(moasset):
-
-                                    Hijack_events_dict[prefix][eventid]['moas_set']=Hijack_events_dict[prefix][eventid]['moas_set']|moasset
+                                    Hijack_events_dict[prefix][eventid]['moas_set'] = \
+                                    Hijack_events_dict[prefix][eventid]['moas_set'] | moasset
 
                     else:
                         prefix_dict[prefix]['moaseventid'] = prefix_dict[prefix]['moaseventid'] + 1
@@ -225,32 +229,33 @@ def update_checking(file,prefix_dict,as_dict):
                         prefix_dict[prefix]['starttime'] = timestamp
 
                         if '{' not in ori_as:
-                            if is_event(ori_as,moasset,as_dict):
-                                Hijack_events_dict.setdefault(prefix,dict())
+                            if is_event(ori_as, moasset, as_dict):
+                                Hijack_events_dict.setdefault(prefix, dict())
 
-                                event_dict=dict()
-                                event_dict['prefix']=prefix
-                                event_dict['starttime']=datetime.utcfromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M:%S")
+                                event_dict = dict()
+                                event_dict['prefix'] = prefix
+                                event_dict['starttime'] = datetime.utcfromtimestamp(int(timestamp)).strftime(
+                                    "%Y-%m-%d %H:%M:%S")
                                 event_dict['ori_as'] = ori_as
 
-                                event_dict['moas_set'] =moasset
-                                Hijack_events_dict[prefix].setdefault(prefix_dict[prefix]['moaseventid'],event_dict)
-                                write_begin_file(event_dict,as_dict)
+                                event_dict['moas_set'] = moasset
+                                Hijack_events_dict[prefix].setdefault(prefix_dict[prefix]['moaseventid'], event_dict)
+                                write_begin_file(event_dict, as_dict)
 
                 else:
-                    if  prefix_dict[prefix]['ismoasnow']:
+                    if prefix_dict[prefix]['ismoasnow']:
                         prefix_dict[prefix]['endtime'] = timestamp
                         duration = int(prefix_dict[prefix]['endtime']) - int(prefix_dict[prefix]['starttime'])
-                        eventid=prefix_dict[prefix]['moaseventid']
+                        eventid = prefix_dict[prefix]['moaseventid']
                         if prefix in Hijack_events_dict.keys():
                             if eventid in Hijack_events_dict[prefix].keys():
-
-                                Hijack_events_dict[prefix][eventid]['endtime']=datetime.utcfromtimestamp(int(timestamp)).strftime("%Y-%m-%d %H:%M:%S")
+                                Hijack_events_dict[prefix][eventid]['endtime'] = datetime.utcfromtimestamp(
+                                    int(timestamp)).strftime("%Y-%m-%d %H:%M:%S")
                                 Hijack_events_dict[prefix][eventid]['duration'] = duration
                                 end_as = list(moasset)[0]
                                 Hijack_events_dict[prefix][eventid]['end_as'] = moasset
 
-                                write_event_file(Hijack_events_dict[prefix][eventid],as_dict)
+                                write_event_file(Hijack_events_dict[prefix][eventid], as_dict)
 
                     prefix_dict[prefix]['ismoasnow'] = False
                     prefix_dict[prefix]['starttime'] = '0'
@@ -258,21 +263,16 @@ def update_checking(file,prefix_dict,as_dict):
                 changed_flag = 0
 
 
-
-
 def main():
+    rib_dir = '/home/hijackchecking/ribs/rrc00_bview.20200401.0000.data'
+    update_dir = '/home/hijackchecking/updates/'
+    as_dict = init_asinfo('/home/hijackchecking/asinfo.txt')
 
-  rib_dir='/home/hijackchecking/ribs/rrc00_bview.20200401.0000.data'
-  update_dir = '/home/hijackchecking/updates/'
-  as_dict=init_asinfo( '/home/hijackchecking/asinfo.txt')
+    prefix_dict = init_rtb(rib_dir)
 
-  prefix_dict=init_rtb(rib_dir)
-
-  file_name = os.listdir(update_dir)
-  for file in file_name:
-      update_checking(update_dir+file,prefix_dict,as_dict)
-
-
+    file_name = os.listdir(update_dir)
+    for file in file_name:
+        update_checking(update_dir + file, prefix_dict, as_dict)
 
 
 if __name__ == '__main__':
