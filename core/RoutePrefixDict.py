@@ -9,6 +9,8 @@ Extract AS attributes from different data source,including bgp ribs, caida data 
 """
 import os
 import json
+import time
+import datetime
 
 class RoutePrefixDict:
 
@@ -50,6 +52,9 @@ class RoutePrefixDict:
     def get_prefixas_mapping(self,filelist):
         #filelist = ['/home/Phoenix/data/rrc00/2019.10/bview.20191001.0000.data']
         for file in filelist:
+            ribtime=self.get_rbfile_time(file)
+            self.prefix_dict.setdefault('ribtimelist', list()).append(ribtime)
+            #print(self.prefix_dict['ribtimelist'])
             with open(file) as f:
                 for line in f:
                     route = line.split('|')
@@ -62,13 +67,16 @@ class RoutePrefixDict:
                     self.prefix_dict.setdefault(prefix, dict())
                     self.prefix_dict[prefix].setdefault('ASMapping', dict())
                     self.prefix_dict[prefix]['ASMapping'].setdefault(asn, dict())
-                    self.prefix_dict[prefix]['ASMapping'][asn].setdefault(timestamp,int())
-                    self.prefix_dict[prefix]['ASMapping'][asn][timestamp]=self.prefix_dict[prefix]['ASMapping'][asn][timestamp]+1
+                    self.prefix_dict[prefix]['ASMapping'][asn].setdefault(ribtime,int())
+                    self.prefix_dict[prefix]['ASMapping'][asn][ribtime]=self.prefix_dict[prefix]['ASMapping'][asn][ribtime]+1
             print(file+' finished')
 
     def get_updates_ts(self, filelist):
 
         for file in filelist:
+            filetime=self.get_upfile_time(file)
+            self.prefix_dict.setdefault('updatetimelist',list()).append(filetime)
+            #print(self.prefix_dict['updatetimelist'])
             with open(file) as f:
                 for line in f:
                     fields = line.strip().split('|')
@@ -76,8 +84,8 @@ class RoutePrefixDict:
                     self.prefix_dict.setdefault(prefix, dict())
                     self.prefix_dict[prefix].setdefault('updates', dict())
                     self.prefix_dict[prefix]['updates'].setdefault(flag, dict())
-                    self.prefix_dict[prefix]['updates'][flag].setdefault(timestamp, int())
-                    self.prefix_dict[prefix]['updates'][flag][timestamp] = self.prefix_dict[prefix]['updates'][flag][timestamp]+1
+                    self.prefix_dict[prefix]['updates'][flag].setdefault(filetime, int())
+                    self.prefix_dict[prefix]['updates'][flag][filetime] = self.prefix_dict[prefix]['updates'][flag][filetime]+1
             print(file + ' finished')
 
     def write_to_file(self, filename):
@@ -93,6 +101,17 @@ class RoutePrefixDict:
                 F.append(line.rstrip('\n'))
         return F
 
+    def get_upfile_time(self,filename):
+        time_format = datetime.datetime.strptime(filename[-18:-5], '%Y%m%d.%H%M')
+        text = datetime.datetime.strftime(time_format, '%Y/%m/%d %H:%M')
+        return text
+
+    def get_rbfile_time(self,filename):
+        time_format = datetime.datetime.strptime(filename[-32:-25], '%Y.%m')
+        text = datetime.datetime.strftime(time_format, '%Y/%m')
+        return text
+
+
 if __name__=="__main__":
     prefix_dict = RoutePrefixDict('/home/Phoenix/data/rrc00')
     #fl=prefix_dict.get_ribfilelist('2019.01','2021.01')
@@ -104,3 +123,4 @@ if __name__=="__main__":
 
     prefix_dict.get_prefixas_mapping(fl)
     prefix_dict.write_to_file('RoutePrefix.txt')
+
