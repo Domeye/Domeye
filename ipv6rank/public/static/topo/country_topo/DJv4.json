@@ -1,0 +1,1 @@
+{"nodes": [{"size": 1.0, "y": -0.0, "name": "ADJIB-AS", "country_code": "DJ", "x": 0.0, "color": "#0055ff", "country": "\u5409\u5e03\u63d0", "_id": "30990", "id": "30990", "label": "30990"}], "edges": [{"target": "30990", "color": "#00aaff", "source": "30990", "transmit": 3574, "id": "0", "size": 0}]}

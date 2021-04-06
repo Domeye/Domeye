@@ -1,0 +1,1 @@
+{"nodes": [{"size": 1.0, "y": 0.0, "name": "SUDATEL-SENEGAL", "country_code": "SN", "x": 0.0, "color": "#0055ff", "country": "\u585e\u5185\u52a0\u5c14", "_id": "37196", "id": "37196", "label": "37196"}], "edges": [{"target": "37196", "color": "#00aaff", "source": "37196", "transmit": 37, "id": "0", "size": 0}]}
