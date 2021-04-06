@@ -1,0 +1,29 @@
+body{
+    font-family: 'Microsoft Yahei','simsun', 'arial', 'sans-serif';
+    font-size: 14.5px;
+    background-color: rgb(250, 250, 250);
+}
+
+ul{
+    list-style: none;
+}
+
+a:link {
+    text-decoration: none;
+    color: #707070;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #707070;
+}
+
+.domeye-bottom {
+    background: black;
+    color: white;
+    height: 23px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

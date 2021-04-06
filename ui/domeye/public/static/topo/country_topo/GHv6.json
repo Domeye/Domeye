@@ -1,0 +1,1 @@
+{"nodes": [{"size": 1.0, "y": -0.0, "name": "SCANCOM", "country_code": "GH", "x": 0.0, "color": "#0055ff", "country": "\u52a0\u7eb3", "_id": "30986", "id": "30986", "label": "30986"}], "edges": [{"target": "30986", "color": "#00aaff", "source": "30986", "transmit": 252, "id": "0", "size": 0}]}
