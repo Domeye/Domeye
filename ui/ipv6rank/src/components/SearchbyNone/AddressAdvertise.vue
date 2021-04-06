@@ -4,6 +4,11 @@
       <div class="title">可路由地址排名前20国家：</div>
     </div>
     <div class="asChart" id="asChart"></div>
+    <div class="footer">
+      <div class="intro">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxsssssssssssxxxxxxxxxxxxx</div>
+      <a class="link" href="" >详细</a>
+      <i class="el-icon-d-arrow-right"></i>
+    </div>
   </div>
 </template>
 
@@ -99,26 +104,30 @@ export default {
       margin: 15px 450px auto 55px;
       font-size: 18px;
     }
-    button {
-      width: 35px;
-      height: 23px;
-      margin-top: 19px;
-    }
-    button:first-of-type {
-      background: rgb(184, 53, 53);
-      border: rgba(172, 50, 50, 0.5);
-      margin-right: 20px;
-    }
-    button:last-of-type {
-      background: rgb(58, 60, 153);
-      border: rgba(58, 60, 151, 0.5);
-      margin-right: 20px;
-    }
   }
   .asChart {
     margin-top: 10px;
     width: 880px;
     height: 300px;
+  }
+  .footer {
+    display: flex;
+    .intro {
+      width: 815px;
+      text-align: center;
+    }
+    a {
+      font-size: 14.5px;
+      letter-spacing: 2px;
+      color: rgb(48, 49, 117);
+    }
+    a:hover {
+      border-bottom: 1.5px solid #7e7e7e;
+    }
+    i {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>
