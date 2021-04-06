@@ -1,0 +1,1 @@
+{"nodes": [{"size": 1.0, "y": 0.0, "name": "IQOPTION", "country_code": "CY", "x": -0.0, "color": "#0055ff", "country": "\u585e\u6d66\u8def\u65af", "_id": "204006", "id": "204006", "label": "204006"}], "edges": [{"target": "204006", "color": "#00aaff", "source": "204006", "transmit": 130, "id": "0", "size": 0}]}

@@ -1,0 +1,41 @@
+.left{
+    width: 450px;
+    height: 380px;
+    float: left;
+  }
+  .right{
+    width: 370px;
+    float: right;
+  }
+  .right-title{
+    margin-left: 50px;
+    padding: 3px 0;
+    width: 220px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #666;
+  }
+  ul li{
+    display: flex;
+    margin-bottom: 12px;
+  }
+  .front {
+    flex: 1;
+    text-align: right;
+  }
+  .following {
+    flex: 2;
+    margin-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+  }
+  /* 清浮动 */
+  .clearfix:after{
+    content: "" ;
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }

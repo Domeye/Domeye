@@ -1,0 +1,1 @@
+{"nodes": [{"size": 1.0, "y": -0.0, "name": "BB-COLUMBUS - Columbus Telecommunications (Barbados) Limited", "country_code": "BB", "x": -0.0, "color": "#0055ff", "country": "\u5df4\u5df4\u591a\u65af", "_id": "14813", "id": "14813", "label": "14813"}], "edges": [{"target": "14813", "color": "#00aaff", "source": "14813", "transmit": 196, "id": "0", "size": 0}]}
