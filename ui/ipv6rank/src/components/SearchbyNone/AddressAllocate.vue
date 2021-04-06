@@ -1,11 +1,9 @@
 <template>
   <div class="allocate">
     <div class="top">
-      <div class="title">排名前20国家数据：</div>
+      <div class="title">已分配地址排名前20国家：</div>
     </div>
     <div class="asChart" id="asChart"></div>
-    <div class="intro"></div>
-    <div class="button"></div>
   </div>
 </template>
 
