@@ -25,7 +25,10 @@
       </div>
       <div class="content">
         <div v-if="this.input_type === ''">
+          <!--子组件中的id不能相同,class可同-->
           <overview v-show="isSelected === 0" />
+          <address-allocate v-show="isSelected === 1" />
+          <address-advertise v-show="isSelected === 3" />
           <as-resource v-show="isSelected === 4" />
         </div>
         <div v-else-if="this.input_type === 'ipv6'">
@@ -54,6 +57,8 @@
 <script>
   import HeadNav from "@/components/HeadNav";
   import Overview from "@/components/SearchbyNone/Overview";
+  import AddressAllocate from "@/components/SearchbyNone/AddressAllocate";
+  import AddressAdvertise from "@/components/SearchbyNone/AddressAdvertise";
   import AsResource from "@/components/SearchbyNone/AsResource";
   import MapDot from "@/components/SearchbyAddress/MapDot";
   import TopoV6 from "@/components/SearchbyAddress/TopoV6";
@@ -70,6 +75,8 @@
     components:{
       HeadNav,
       Overview,
+      AddressAllocate,
+      AddressAdvertise,
       AsResource,
       MapDot,
       TopoV6,

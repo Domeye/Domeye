@@ -3,7 +3,7 @@
     <div class="top">
       <div class="title">可路由地址排名前20国家：</div>
     </div>
-    <div class="asChart" id="asChart"></div>
+    <div class="chart" id="v6Chart3"></div>
     <div class="footer">
       <div class="intro">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxsssssssssssxxxxxxxxxxxxx</div>
       <a class="link" href="" >详细</a>
@@ -13,26 +13,23 @@
 </template>
 
 <script>
-var AS_allocated = require("@/utils/AS_allocated.json");
-var AS_advertised = require("@/utils/AS_advertised.json");
+var v6_advertised = require("@/utils/v6_advertised.json");
+var countrytolat = require("@/utils/countrytolat.json");
 
 export default {
   name: "AsResource",
   data() {
     return {
-      AS_allocated_map: null,  // 全部排序
-      AS_allocated_sort: null,  // 前20名
-      AS_advertised_map: null,
-      AS_advertised_sort: null,
+      title: '',
+      v6_advertised_map: null,  // 全部排序
+      v6_advertised_sort: null,  // 前20名
     }
   },
   mounted() {
-    this.AS_allocated_map = this.jsonSort(AS_allocated).slice(0, 20)
-    console.log("已分配：", this.AS_allocated_map)   // 输出的键值为0,1,2,3....
-    this.AS_allocated_sort = this.jsonSort(AS_allocated)
-    this.AS_advertised_map = this.jsonSort(AS_advertised).slice(0, 20)
-    console.log("已路由：", this.AS_advertised_map)
-    this.AS_advertised_sort = this.jsonSort(AS_advertised)
+    this.title = "可路由v6地址排名前20国家："
+    this.v6_advertised_map = this.jsonSort(v6_advertised).slice(0, 20)
+    console.log("v6地址已路由：", this.v6_advertised_map)
+    this.v6_advertised_sort = this.jsonSort(v6_advertised)
     this.drawASMap1()
   },
   methods: {
@@ -41,10 +38,10 @@ export default {
       return array.reverse()  // 输出为降序
     },
     drawASMap1() {
-      let map = this.$echarts.init(document.getElementById("asChart"))
+      let map = this.$echarts.init(document.getElementById("v6Chart3"))
       var datax = []
       var datay= []
-      for (var item of this.AS_allocated_map) {
+      for (var item of this.v6_advertised_map) {
         datax.push(item["name"])
         datay.push(item["value"])
       }
@@ -52,9 +49,14 @@ export default {
         tooltip: {
           trigger: "item",
           formatter: function (params) {
+            for (var item of countrytolat) {
+              if (item['code'] = params.name) {
+                var countryname = item['name']
+              }
+            }
             var value = params.value + "";
             return (
-              "% Allocated AS space" + "<br/>" + params.name + " : " + value
+              "% Allocated AS space" + "<br/>" + countryname + " : " + value
             );
           },
         },
@@ -76,14 +78,21 @@ export default {
         ],
         yAxis: [
           {
-            type: 'value'
+            type: 'value',
+            name: '亿',
+            axisLabel: {
+              formatter: function (value) {
+                //return value.toString().slice(0, -11) + ' 亿'
+                return value/1000000000000 + ' 万亿'
+              }
+            }
           }
         ],
         series: [
           {
-            name: 'allocated',
+            name: 'advertised',
             type: 'bar',
-            barWidth: '60%',
+            barWidth: '65%',
             data: datay
           }
         ]
@@ -95,17 +104,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.as {
+.advertise {
   width: 880px;
   height: 380px;
   .top {
     display: flex;
     .title {
-      margin: 15px 450px auto 55px;
-      font-size: 18px;
+      margin: 20px 320px auto 100px;
+      font-size: 17px;
     }
   }
-  .asChart {
+  .chart {
     margin-top: 10px;
     width: 880px;
     height: 300px;

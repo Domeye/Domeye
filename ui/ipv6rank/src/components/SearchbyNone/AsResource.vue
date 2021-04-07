@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="asChart" id="asChart"></div>
+    <div class="chart" id="asChart"></div>
     <div class="footer">
       <div class="intro">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxsssssssssssxxxxxxxxxxxxx</div>
       <a class="link" href="" >详细</a>
@@ -25,6 +25,7 @@
 <script>
 var AS_allocated = require("@/utils/AS_allocated.json");
 var AS_advertised = require("@/utils/AS_advertised.json");
+var countrytolat = require("@/utils/countrytolat.json");
 
 export default {
   name: "AsResource",
@@ -72,9 +73,14 @@ export default {
         tooltip: {
           trigger: "item",
           formatter: function (params) {
+            for (var item of countrytolat) {
+              if (item['code'] = params.name) {
+                var countryname = item['name']
+              }
+            }
             var value = params.value + "";
             return (
-              "% Allocated AS space" + "<br/>" + params.name + " : " + value
+              "% Allocated AS space" + "<br/>" + countryname + " : " + value
             );
           },
         },
@@ -125,9 +131,14 @@ export default {
         tooltip: {
           trigger: "item",
           formatter: function (params) {
+            for (var item of countrytolat) {
+              if (item['code'] = params.name) {
+                var countryname = item['name']
+              }
+            }
             var value = params.value + "";
             return (
-              "% Advertised AS space" + "<br/>" + params.name + " : " + value
+              "% Advertised AS space" + "<br/>" + countryname + " : " + value
             );
           },
         },
@@ -159,7 +170,7 @@ export default {
             itemStyle: {
               color: "rgb(58, 60, 153)",
             },
-            barWidth: '60%',
+            barWidth: '65%',
             data: datay
           }
         ]
@@ -212,7 +223,7 @@ export default {
       }
     }
   }
-  .asChart {
+  .chart {
     margin-top: 5px;
     width: 880px;
     height: 300px;
