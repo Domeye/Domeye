@@ -36,6 +36,10 @@ html, body, #app {
     height: 100%;
     width: 100%;
 }
+// 解决由于滚动条是否出现导致的页面抖动问题
+html {
+  overflow-y:scroll; 
+}
 
 // 定义整个滚动条
 ::-webkit-scrollbar{

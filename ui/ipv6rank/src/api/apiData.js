@@ -1,4 +1,5 @@
 import requestLabelData from "@/network/requestLabelData";
+import requestASInfo from '@/network/requestASInfo'
 
 export const getjudgeResult = (search) => {
 	return requestLabelData({
@@ -88,4 +89,14 @@ export const getwebDomain = (search) => {
 			input_search: search,
 		}
 	}) 
+}
+
+export const getASInfo = (search) => {
+  return requestASInfo({
+    method: 'post',
+    url: 'asinfo',
+    data: {
+      input_search: search
+    }
+  })
 }
