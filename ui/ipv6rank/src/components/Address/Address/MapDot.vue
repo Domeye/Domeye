@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getmapDot, getlongestAsPrefix} from "../../api/apiData";
+import {getmapDot, getlongestAsPrefix} from "@/api/apiData";
 
 export default {
   name: 'MapDot',

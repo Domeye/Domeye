@@ -1,11 +1,11 @@
 <template>
-  <div class="advertise">
+  <div class="allocate">
     <div class="top">
-      <div class="title">可路由地址排名前20国家：</div>
+      <div class="title">全球v6地址资源分配情况</div>
     </div>
-    <div class="chart" id="v6Chart3"></div>
+    <div class="chart" id="v6Chart1"></div>
     <div class="footer">
-      <div class="intro">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxsssssssssssxxxxxxxxxxxxx</div>
+      <div class="intro">截止至2021年4月5日 全球v6资源分配总数为545万亿 中国占253万亿</div>
       <a class="link" href="" >详细</a>
       <i class="el-icon-d-arrow-right"></i>
     </div>
@@ -13,35 +13,41 @@
 </template>
 
 <script>
-var v6_advertised = require("@/utils/v6_advertised.json");
-var countrytolat = require("@/utils/countrytolat.json");
+// var v6_allocated = require("@/utils/v6_allocated.json");
+import v6_allocated from "@/utils/v6_allocated.json";
+import countrytolat from "@/utils/countrytolat.json";
 
 export default {
-  name: "AsResource",
+  name: "AddressAllocate",
   data() {
     return {
       title: '',
-      v6_advertised_map: null,  // 全部排序
-      v6_advertised_sort: null,  // 前20名
+      v6_allocated_map: null,  // 全部排序
+      v6_allocated_sort: null,  // 前20名
     }
   },
   mounted() {
-    this.title = "可路由v6地址排名前20国家："
-    this.v6_advertised_map = this.jsonSort(v6_advertised).slice(0, 20)
-    console.log("v6地址已路由：", this.v6_advertised_map)
-    this.v6_advertised_sort = this.jsonSort(v6_advertised)
-    this.drawASMap1()
+    this.title = "全球v6地址资源分配情况"
+    this.v6_allocated_map = this.jsonSort(v6_allocated).slice(0, 20)
+    console.log("v6地址已分配：", this.v6_allocated_map)   // 输出的键值为0,1,2,3....
+    this.v6_allocated_sort = this.jsonSort(v6_allocated)
+    this.drawV6Map()
   },
   methods: {
-    jsonSort(array) {
-      array.sort(function(x, y) { return parseInt(x['value']) - parseInt(y['value'])});
-      return array.reverse()  // 输出为降序
+    /**
+     * @description: 将国家按照v6资源分配数进行排序
+     * @param {数组} v6_allocated
+     * @return {数组} 降序排序过后的数组
+     */
+    jsonSort(v6_allocated) {
+      v6_allocated.sort(function(x, y) { return parseInt(x['value']) - parseInt(y['value'])});
+      return v6_allocated.reverse()  // 输出为降序
     },
-    drawASMap1() {
-      let map = this.$echarts.init(document.getElementById("v6Chart3"))
+    drawV6Map() {
+      let map = this.$echarts.init(document.getElementById("v6Chart1"))
       var datax = []
       var datay= []
-      for (var item of this.v6_advertised_map) {
+      for (var item of this.v6_allocated_map) {
         datax.push(item["name"])
         datay.push(item["value"])
       }
@@ -50,7 +56,7 @@ export default {
           trigger: "item",
           formatter: function (params) {
             for (var item of countrytolat) {
-              if (item['code'] = params.name) {
+              if (item['code'] == params.name) {
                 var countryname = item['name']
               }
             }
@@ -79,7 +85,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '亿',
+            name: '万亿',
             axisLabel: {
               formatter: function (value) {
                 //return value.toString().slice(0, -11) + ' 亿'
@@ -90,44 +96,57 @@ export default {
         ],
         series: [
           {
-            name: 'advertised',
+            name: 'allocated',
             type: 'bar',
             barWidth: '65%',
+            label: {
+              show: true,
+              position: 'top',
+              color: 'gray',
+              fontSize: '13',
+              formatter: function(params) {
+                //console.log("series params:", params)
+                return String((params.value/1000000000000).toFixed(12)).slice(0, -13)
+              },
+            },
             data: datay
           }
         ]
       });
       window.onresize = map.resize;
-    }
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.advertise {
+.allocate {
   width: 880px;
   height: 380px;
   .top {
     display: flex;
+    justify-content: center;
     .title {
-      margin: 20px 320px auto 100px;
+      margin: 20px auto auto auto;
       font-size: 17px;
     }
   }
   .chart {
     margin-top: 10px;
     width: 880px;
-    height: 300px;
+    height: 302px;
   }
   .footer {
+    margin-left: 50px;
     display: flex;
+    justify-content: center;
     .intro {
-      width: 815px;
-      text-align: center;
+      font-size: 14px;
+      margin-right: 30px;
     }
     a {
-      font-size: 14.5px;
-      letter-spacing: 2px;
+      font-size: 14px;
+      letter-spacing: 1px;
       color: rgb(48, 49, 117);
     }
     a:hover {
