@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getlongestAsPrefix, getlongestInet6Prefix} from "../../api/apiData";
+import {getlongestAsPrefix, getlongestInet6Prefix} from "@/api/apiData";
 
 export default {
   name: 'TopoV6',

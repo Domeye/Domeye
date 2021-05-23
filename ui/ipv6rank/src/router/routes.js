@@ -78,7 +78,7 @@ const routes = [
   {
     path:'/test',
     name:'test',
-    component:() => import('@/testSass/test')
+    component:() => import('@/testSass/testSass')
   },
   {
     path:'/lifecycle',
@@ -86,9 +86,9 @@ const routes = [
     component:() => import('@/testSass/lifecycle')
   },
   {
-    path:'/el-table',
-    name:'el-table',
-    component:() => import('@/testSass/el-table')
+    path:'/testFlask',
+    name:'testFlask',
+    component:() => import('@/testSass/testFlask')
   },
   {
     path:'/scale',

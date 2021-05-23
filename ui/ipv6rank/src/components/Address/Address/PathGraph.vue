@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import {getpathGraph} from "../../api/apiData";
+import {getpathGraph} from "@/api/apiData";
 
 export default {
   name: "PathGraph",

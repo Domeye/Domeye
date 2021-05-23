@@ -1,9 +1,21 @@
 import requestLabelData from "@/network/requestLabelData";
+import requestAsinfo from "@/network/requestAsinfo";
+
+
+export const getasinfo = (search) => {
+	return requestAsinfo({
+		method: 'post',
+		url: 'asinfo',
+		data: {
+			input_search: search,
+		}
+	})
+}
 
 export const getjudgeResult = (search) => {
 	return requestLabelData({
 		method: 'post',
-		url: 'judge',
+		url: '',
 		data: {
 			input_search: search,
 		}
