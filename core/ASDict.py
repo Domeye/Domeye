@@ -128,6 +128,8 @@ class ASDict:
         file.write(js)
         file.close()
 
+
+
     def create_as_dict(self):
         self.init_asinfo()
         self.extract_peers()
