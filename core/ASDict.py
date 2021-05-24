@@ -11,7 +11,8 @@ import os
 from itertools import islice
 import json
 from IPy import IP
-
+import numpy as np
+import pandas as pd
 
 class ASDict:
 
@@ -127,6 +128,8 @@ class ASDict:
         file.write(js)
         file.close()
 
+
+
     def create_as_dict(self):
         self.init_asinfo()
         self.extract_peers()
@@ -164,12 +167,15 @@ class ASDict:
         return self.as_dict
 
 
+
 if __name__=="__main__":
-    aslist_filename = '/home/ASDict/asn.txt'
-    astype_filename= '/home/ASDict/20201101.as2types.txt'
-    asorg_filename = '/home/ASDict/20201001.as-org2info.txt'
-    rib_dir = '/home/ASDict/ribs/'
+    aslist_filename = '/home/Domeye/data/rir/2021-04-25/asn.txt'
+    astype_filename= '/home/Domeye/data/caida/20201101.as2types.txt'
+    asorg_filename = '/home/Domeye/data/caida/20210401.as-org2info.txt'
+    rib_dir = '/home/Domeye/data/routing/ribs/'
     as_dict = ASDict(aslist_filename,astype_filename,asorg_filename,rib_dir)
     as_dict.create_as_dict()
-    as_dict.write_to_file('asinfo.txt')
+    as_dict.write_to_file('/home/Domeye/output/dict/as_dict.txt')
+
+
 
