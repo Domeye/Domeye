@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import {get3Picture} from "../../api/apiData";
+import {get3Picture} from "@/api/apiData";
 
 export default {
   name: 'AsnumGraph',

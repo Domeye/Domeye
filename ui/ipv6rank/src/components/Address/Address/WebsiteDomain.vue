@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getwebDomain, getlongestAsPrefix} from "../../api/apiData";
+import {getwebDomain, getlongestAsPrefix} from "@/api/apiData";
 
 export default {
   name: 'WebsiteDomain',

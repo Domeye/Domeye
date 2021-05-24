@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getrelationGraph } from "../../api/apiData";
+import { getrelationGraph } from "@/api/apiData";
 
 export default {
   name: "RelationGraph",

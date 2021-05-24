@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getWhois} from "../../api/apiData";
+import {getWhois} from "@/api/apiData";
 
 export default {
   name: "whois",
